@@ -1,0 +1,7 @@
+include README.md
+include LICENSE
+include requirements.txt
+recursive-include BTFT *.py
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude .DS_Store

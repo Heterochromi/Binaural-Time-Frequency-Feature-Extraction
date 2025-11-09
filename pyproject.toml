@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "btff"
+version = "0.1.0"
+description = "Binaural Time-Frequency Transform - PyTorch-based library for binaural audio feature extraction/pre-processing."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Bara Samih Yousef", email = "baraa.sameeh.yousef@gmail.com"}
+]
+keywords = ["audio", "binaural", "pytorch", "signal-processing", "machine-learning", "ITD", "ILD", "HRTF" ,"psychoacoustic"]
+
+dependencies = [
+    "torch>=2.0.0",
+    "torchaudio>=2.0.0",
+    "torchcodec"
+]
+
+[project.urls]
+Homepage = "https://github.com/Heterochromi/Binaural-Time-Frequency-Feature-Extraction"
+Documentation = "https://github.com/Heterochromi/Binaural-Time-Frequency-Feature-Extraction/blob/main/README.md"
+Repository = "https://github.com/Heterochromi/Binaural-Time-Frequency-Feature-Extraction"
+Issues = "https://github.com/Heterochromi/Binaural-Time-Frequency-Feature-Extraction/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
