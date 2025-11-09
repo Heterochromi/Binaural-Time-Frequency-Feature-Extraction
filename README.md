@@ -133,7 +133,7 @@ audio_paths = [
     # ... more files
 ]
 
-# or if you an entire directory
+# or if you have an entire directory
 from typing import List , Path
 audio_dir = Path("/path/to/audio/directory")
 audio_paths = list(audio_dir.glob("*.wav"))
