@@ -16,6 +16,12 @@ Below are the primary HRTF-derived features produced by this library. Each entry
 - **V** — Velocity maps: temporal gradients of the Mel spectrograms capturing rapid spectral changes. (2 channels: left and right)
 - **SC** — Spectral Cues map: high-frequency portion of the Mel spectrograms useful for vertical Localization. (2 channels: left and right)
 
+notice how some features have empty values because they are high/low pass filtered versions of the STFT before being processed into mel scale.
+the paper authors do it like this to keep all inputs equal in size so they can work with CNNs.
+
+![BTFF output visualization](visualized/btff_output_visualization.png)
+
+
 ## Library Features
 
 - **Binaural Audio Processing**: Extract spatial audio features from stereo HRTF recordings
