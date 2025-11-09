@@ -2,7 +2,7 @@
 
 A PyTorch-based library for computing binaural audio features including Interaural Time Difference (ITD), Interaural Level Difference (ILD), Mel spectrograms, velocity maps, and high-frequency spectral cues.
 
-## From The paper [Binaural Sound Event Localization and Detection based on HRTF Cues for Humanoid Robots](https://arxiv.org/abs/2507.20530)
+#### From The paper [Binaural Sound Event Localization and Detection based on HRTF Cues for Humanoid Robots](https://arxiv.org/abs/2507.20530)
 
 <small>*Note: I am not the author of the paper; I only implemented the HRTF audio feature extraction part to the best of my ability.*</small>
 
@@ -139,7 +139,7 @@ audio_paths = [
     # ... more files
 ]
 
-# or if you an entire directory
+# or if you have an entire directory
 from typing import List , Path
 audio_dir = Path("/path/to/audio/directory")
 audio_paths = list(audio_dir.glob("*.wav"))
