@@ -237,7 +237,7 @@ MIT License
 ## Citations
 
 ```bibtex
-@paper{lee2025biseld,
+@misc{lee2025biseld,
   title={Binaural Sound Event Localization and Detection based on HRTF Cues for Humanoid Robots},
   author={Gyeong-Tae Lee, Hyeonuk Nam, Yong-Hwa Park},
   year={28 Jul 2025},
