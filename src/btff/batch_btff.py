@@ -176,7 +176,7 @@ class BtffBatchProcessor:
         # Find max length if not specified
         if max_length is None:
             print(
-                "no max length specified, using longest in batch, this could be problematic denpending on your use case, please specify max length or ensure all files are same length"
+                "no max length specified, using longest in batch for now, this could be problematic denpending on your use case, please specify max length or ensure all audio files are the same length"
             )
             max_length = max(w.shape[1] for w in waveforms)
 
@@ -397,7 +397,7 @@ class BtffBatchProcessor:
                 dim=1,
             )  # [batch, 8, n_mels, time_frames]
             # Create BTFFBatch object
-            yield BTFFBatch(
+            yield BtffBatch(
                 features=stacked_features,
                 feature_dict=feature_dict,
                 paths=batch_paths,
