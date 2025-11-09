@@ -77,6 +77,17 @@ class BtffBatchProcessor:
     """
     Efficient batch processor for BTFF transforms.
     Processes multiple audio files in parallel on GPU.
+
+    Works like PyTorch's DataLoader - returns an iterator over batches.
+
+    Example:
+        >>> processor = BtffBatchProcessor(device='cuda', batch_size=16)
+        >>>
+        >>> # Iterate like PyTorch DataLoader
+        >>> for batch in processor.process_files(audio_paths):
+        >>>     features = batch.features  # [batch, 8, n_mels, time]
+        >>>     itd = batch['itd']  # Access individual features
+        >>>     batch = batch.to('cuda')  # Move to device
     """
 
     def __init__(
@@ -106,6 +117,9 @@ class BtffBatchProcessor:
         self.stft_transform = None
         self.mel_fb = None
         self.bin_width = None
+
+        # Track current dataset for DataLoader-like behavior
+        self._current_files = None
 
     def _initialize_transforms(self, sr):
         """Initialize transforms once we know the sample rate"""
@@ -152,7 +166,7 @@ class BtffBatchProcessor:
         sample_rate = None
 
         for path in audio_paths:
-            waveform, sr = torchaudio.load_with_torchcodec(path)
+            waveform, sr = torchaudio.load(path)
 
             if sample_rate is None:
                 sample_rate = sr
@@ -315,23 +329,26 @@ class BtffBatchProcessor:
         sc_map_start_freq=5000,
     ):
         """
+        Process audio files in batches (like PyTorch DataLoader).
+
         Args:
             audio_paths: List of paths to audio files
             itd_start_freq: Start frequency for ITD computation (Hz)
             itd_stop_freq: Stop frequency for ITD computation (Hz)
             ild_start_freq: Start frequency for ILD computation (Hz)
             sc_map_start_freq: Start frequency for SC map computation (Hz)
-            return_dict: If True, returns dict. If False, returns BTFFBatch object (default)
 
         Yields:
-            BTFFBatch object containing:
+            BtffBatch object containing:
                 - features: Stacked tensor [batch, 8, n_mels, time_frames]
                 - feature_dict: Dictionary of individual features
                 - paths: List of file paths
                 - batch_size: Number of samples in batch
 
         Example:
-            >>> processor = BTFFBatchProcessor(batch_size=16)
+            >>> processor = BtffBatchProcessor(batch_size=16, device='cuda')
+            >>>
+            >>> # Iterate over batches (like DataLoader)
             >>> for batch in processor.process_files(audio_paths):
             >>>     # Access as tensor
             >>>     all_features = batch.features  # [16, 8, 128, time]
@@ -345,6 +362,7 @@ class BtffBatchProcessor:
             >>>     # Access by sample
             >>>     sample_0_features = batch[0]  # Dict of all features for first sample
         """
+        self._current_files = audio_paths
         num_files = len(audio_paths)
 
         for i in range(0, num_files, self.batch_size):
@@ -396,13 +414,38 @@ class BtffBatchProcessor:
                 ],
                 dim=1,
             )  # [batch, 8, n_mels, time_frames]
-            # Create BTFFBatch object
+            # Create BtffBatch object
             yield BtffBatch(
                 features=stacked_features,
                 feature_dict=feature_dict,
                 paths=batch_paths,
                 batch_size=len(batch_paths),
             )
+
+    def __call__(self, audio_paths: List[str], **kwargs):
+        """
+        Make the processor callable like a DataLoader.
+
+        Example:
+            >>> processor = BtffBatchProcessor(batch_size=16)
+            >>> for batch in processor(audio_paths):
+            >>>     print(batch.features.shape)
+        """
+        return self.process_files(audio_paths, **kwargs)
+
+    def __len__(self):
+        """Return number of batches if files are set"""
+        if self._current_files is None:
+            return 0
+        return (len(self._current_files) + self.batch_size - 1) // self.batch_size
+
+    def __repr__(self):
+        """String representation"""
+        return (
+            f"BtffBatchProcessor(batch_size={self.batch_size}, "
+            f"device={self.device}, n_mels={self.n_mels}, "
+            f"n_fft={self.n_fft})"
+        )
 
     def v_map_batch(self, mel_batch):
         """Compute velocity map for batch"""

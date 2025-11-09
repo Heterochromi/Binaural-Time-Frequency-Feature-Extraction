@@ -17,7 +17,6 @@ keywords = ["audio", "binaural", "pytorch", "signal-processing", "machine-learni
 dependencies = [
     "torch",
     "torchaudio",
-    "torchcodec",
     "numpy"
 ]
 

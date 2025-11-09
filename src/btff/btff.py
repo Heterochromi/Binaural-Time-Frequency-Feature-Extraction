@@ -18,7 +18,7 @@ class BtffTransoform:
         self.fmax = fmax
         self.n_mels = n_mels
         self.n_fft = n_fft
-        waveform, self.sr = torchaudio.load_with_torchcodec(input_audio_path)
+        waveform, self.sr = torchaudio.load(input_audio_path)
         waveform = waveform.to(self.device)
 
         self.bin_width = self.sr / self.n_fft
@@ -117,7 +117,7 @@ class BtffTransoform:
         return self.mel_fb(ild)
 
     def v_map(self):
-        mel_left_spec, mel_right_spec = self.mel_spectrogram()
+        mel_left_spec, mel_right_spec = self.mel_spect()
 
         v_map_left = torch.zeros_like(mel_left_spec, device=self.device)
         v_map_left[0] = mel_left_spec[1] - mel_left_spec[0]
@@ -130,7 +130,7 @@ class BtffTransoform:
         v_map_right[-1] = mel_right_spec[-1] - mel_right_spec[-2]
         return v_map_left, v_map_right
 
-    def mel_spectrogram(self):
+    def mel_spect(self):
         # mel_left_spec = self.left_mag.pow(2)
         # mel_right_spec = self.right_mag.pow(2)
 
@@ -162,7 +162,7 @@ class BtffTransoform:
 
         return sc_map_left, sc_map_right
 
-    def btff_features(
+    def process_file(
         self,
         itd_start_freq=0,
         itd_stop_freq=1500,
@@ -171,7 +171,7 @@ class BtffTransoform:
     ):
         itd = self.ITD_spect(start_freq=itd_start_freq, stop_freq=itd_stop_freq)
         ild = self.ILD_spect(start_freq=ild_start_freq)
-        mel_left_spec, mel_right_spec = self.mel_spectrogram()
+        mel_left_spec, mel_right_spec = self.mel_spect()
         v_map_left, v_map_right = self.v_map()
         sc_map_left, sc_map_right = self.sc_map(start_freq=sc_map_start_freq)
 
