@@ -237,11 +237,11 @@ MIT License
 ## Citations
 
 ```bibtex
-@misc{lee2025biseld,
-  title={Binaural Sound Event Localization and Detection based on HRTF Cues for Humanoid Robots},
-  author={Gyeong-Tae Lee, Hyeonuk Nam, Yong-Hwa Park},
-  year={28 Jul 2025},
-  url={https://arxiv.org/abs/2507.20530}
+@article{lee2025binaural,
+  title={Binaural sound event localization and detection based on hrtf cues for humanoid robots},
+  author={Lee, Gyeong-Tae and Nam, Hyeonuk and Park, Yong-Hwa},
+  journal={arXiv preprint arXiv:2507.20530},
+  year={2025}
 }
 ```
 [Binaspect](https://github.com/QxLabIreland/Binaspect) was used for reference to create this project since it very similarly focuses on binaural audio feature extraction.
