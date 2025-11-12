@@ -88,8 +88,8 @@ mel_left = features['mel_left_spec']     # Left channel Mel spectrogram
 mel_right = features['mel_right_spec']   # Right channel Mel spectrogram
 v_left = features['v_map_left']          # Left channel velocity map
 v_right = features['v_map_right']        # Right channel velocity map
-sc_left = features['sc_map_left']        # Left channel spectral centroid
-sc_right = features['sc_map_right']      # Right channel spectral centroid
+sc_left = features['sc_map_left']        # Left channel spectral cues
+sc_right = features['sc_map_right']      # Right channel spectral cues
 
 ```
 
